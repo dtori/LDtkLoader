@@ -18,6 +18,7 @@
 # include <string>
 # include <stdexcept>
 
+# define __throw 
 # define TR2_OPTIONAL_REQUIRES(...) typename enable_if<__VA_ARGS__::value, bool>::type = false
 
 # if defined __GNUC__ // NOTE: GNUC is also defined for Clang
@@ -538,15 +539,15 @@ struct is_nothrow_move_assignable
   }
 
   constexpr T const& value() const& {
-    return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
+    return initialized() ? contained_val() : (__throw bad_optional_access("bad optional access"), contained_val());
   }
 
   OPTIONAL_MUTABLE_CONSTEXPR T& value() & {
-    return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
+    return initialized() ? contained_val() : (__throw bad_optional_access("bad optional access"), contained_val());
   }
 
   OPTIONAL_MUTABLE_CONSTEXPR T&& value() && {
-    if (!initialized()) throw bad_optional_access("bad optional access");
+    if (!initialized()) __throw bad_optional_access("bad optional access");
 	return std::move(contained_val());
   }
 
@@ -567,11 +568,11 @@ struct is_nothrow_move_assignable
             }
 
             constexpr T const& value() const {
-                return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
+                return initialized() ? contained_val() : (__throw bad_optional_access("bad optional access"), contained_val());
             }
 
             T& value() {
-                return initialized() ? contained_val() : (throw bad_optional_access("bad optional access"), contained_val());
+                return initialized() ? contained_val() : (__throw bad_optional_access("bad optional access"), contained_val());
             }
 
 # endif
@@ -702,7 +703,7 @@ struct is_nothrow_move_assignable
             }
 
             constexpr T& value() const {
-                return ref ? *ref : (throw bad_optional_access("bad optional access"), *ref);
+                return ref ? *ref : (__throw bad_optional_access("bad optional access"), *ref);
             }
 
             explicit constexpr operator bool() const noexcept {
