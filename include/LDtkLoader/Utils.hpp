@@ -7,10 +7,14 @@
 
 #include "LDtkLoader/DataTypes.hpp"
 
+#ifndef __throw
+    #define __throw 
+#endif
+
 #ifdef LDTK_NO_THROW
     #define ldtk_error(msg) do{ldtk::print_error(__FUNCTION__, msg);exit(EXIT_FAILURE);}while(0)
 #else
-    #define ldtk_error(msg) throw std::invalid_argument("LDtkLoader exception (in "+std::string(__FUNCTION__)+") : "+std::string(msg))
+    #define ldtk_error(msg) __throw std::invalid_argument("LDtkLoader exception (in "+std::string(__FUNCTION__)+") : "+std::string(msg))
 #endif
 
 namespace ldtk {

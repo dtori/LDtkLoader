@@ -7,6 +7,10 @@
 
 #include "LDtkLoader/thirdparty/optional.hpp"
 
+#ifndef __throw
+    #define __throw 
+#endif
+
 namespace ldtk {
     template<typename T>
     using optional = std::experimental::optional<T>;
@@ -40,7 +44,7 @@ namespace ldtk {
         }
 
         operator const ArrayField<T>&() const {
-            throw std::runtime_error("Cannot convert ldtk::Field<T> to ldtk::ArrayField<T>");
+            __throw std::runtime_error("Cannot convert ldtk::Field<T> to ldtk::ArrayField<T>");
             return m_dummy;
         }
     };
@@ -77,7 +81,7 @@ namespace ldtk {
         explicit ArrayField(const std::vector<Field<T>>& vals) : std::vector<Field<T>>(vals) {}
 
         operator const Field<T>&() const {
-            throw std::runtime_error("Cannot convert ldtk::ArrayField<T> to ldtk::Field<T>");
+            __throw std::runtime_error("Cannot convert ldtk::ArrayField<T> to ldtk::Field<T>");
             return this->at(0);
         }
     };
